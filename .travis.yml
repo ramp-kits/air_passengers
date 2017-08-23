@@ -11,7 +11,9 @@ before_install:
 install:
     - conda create -n testenv --yes pip python=$PYTHON_VERSION
     - source activate testenv
-    - conda install --yes --quiet numpy scipy matplotlib scikit-learn pandas jupyter seaborn gitpython
+    - conda install --yes --quiet numpy scipy matplotlib scikit-learn pandas
+    - conda install --yes --quiet jupyter seaborn gitpython scikit-image joblib
+    - conda install --yes --quiet cloudpickle
     - pip install -q flake8
     - git clone https://github.com/paris-saclay-cds/ramp-workflow.git
     - cd ramp-workflow
