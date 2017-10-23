@@ -12,12 +12,8 @@ install:
     - conda create -n testenv --yes pip python=$PYTHON_VERSION
     - source activate testenv
     - pip install -q flake8
-    - conda install --yes seaborn
-    - git clone https://github.com/paris-saclay-cds/ramp-workflow.git
-    - cd ramp-workflow
-    - python setup.py install
-    - source install_requirements.sh
-    - cd ..
+    - pip install git+https://github.com/paris-saclay-cds/ramp-workflow.git
+    - pip install -r requirements.txt
 script:
     - flake8 *.py submissions/*/*.py
     - jupyter nbconvert --execute air_passengers_starting_kit.ipynb --ExecutePreprocessor.kernel_name=$IPYTHON_KERNEL --ExecutePreprocessor.timeout=600
