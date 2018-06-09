@@ -33,7 +33,7 @@ class FeatureExtractor(object):
         X_encoded = X_encoded.drop('Events', axis=1)
         X_encoded = X_encoded.drop('DateOfDeparture', axis=1)
         self.columns = X_encoded.columns
-            
+
     def transform(self, X_df):
         X_encoded = X_df
         path = os.path.dirname(__file__)
