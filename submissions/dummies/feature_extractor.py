@@ -8,6 +8,8 @@ class FeatureExtractor(object):
         pass
 
     def fit(self, X_df, y_array):
+        # We compute here the columns present in the training data
+        # after dummification
         X_encoded = X_df
         path = os.path.dirname(__file__)
         data_weather = pd.read_csv(os.path.join(path, 'external_data.csv'))
@@ -57,6 +59,8 @@ class FeatureExtractor(object):
 
         X_encoded = X_encoded.drop('DateOfDeparture', axis=1)
         columns = X_encoded.columns
+        # If we have more columns than in self.columns, fill the
+        # column by zero. If we have less columns, we ignore them.
         if not np.array_equal(columns, self.columns):
             X_fixed = pd.DataFrame(
                 np.zeros(shape=(len(X_encoded), len(self.columns))),
