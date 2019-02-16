@@ -1,34 +1,54 @@
-import pandas as pd
 import os
+import warnings
+
+import numpy as np
+import pandas as pd
+
+from sklearn.base import TransformerMixin
+from sklearn.exceptions import DataConversionWarning
+from sklearn.compose import make_column_transformer
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OneHotEncoder
 
 
-class FeatureExtractor(object):
+class FeatureExtractor(TransformerMixin):
     def __init__(self):
-        pass
+        numerical_columns = ['WeeksToDeparture', 'std_wtd', 'Max TemperatureC']
+        categorical_columns = ['Departure', 'Arrival']
+        self.preprocessor = make_column_transformer(
+            (StandardScaler(), numerical_columns),
+            (OneHotEncoder(), categorical_columns)
+        )
 
-    def fit(self, X_df, y_array):
-        pass
-
-    def transform(self, X_df):
-        X_encoded = X_df
-        path = os.path.dirname(__file__)
-        data_weather = pd.read_csv(os.path.join(path, 'external_data.csv'))
-        X_weather = data_weather[['Date', 'AirPort', 'Max TemperatureC']]
-        X_weather = X_weather.rename(
-            columns={'Date': 'DateOfDeparture', 'AirPort': 'Arrival'})
-        X_encoded = pd.merge(
-            X_encoded, X_weather, how='left',
+    def _merge_external_data(self, X_df):
+        """Merge the orignal data with the external data."""
+        submission_path = os.path.dirname(__file__)
+        df_weather = pd.read_csv(
+            os.path.join(submission_path, 'external_data.csv'),
+            usecols=['Date', 'AirPort', 'Max TemperatureC'],
+        )
+        df_weather = df_weather.rename(
+            columns={'Date': 'DateOfDeparture', 'AirPort': 'Arrival'}
+        )
+        df_weather['DateOfDeparture'] = pd.to_datetime(
+            df_weather['DateOfDeparture']
+        )
+        return X_df.merge(
+            df_weather, how='left',
             left_on=['DateOfDeparture', 'Arrival'],
             right_on=['DateOfDeparture', 'Arrival'],
-            sort=False)
+            sort=False
+        )
 
-        X_encoded = X_encoded.join(pd.get_dummies(
-            X_encoded['Departure'], prefix='d'))
-        X_encoded = X_encoded.join(
-            pd.get_dummies(X_encoded['Arrival'], prefix='a'))
-        X_encoded = X_encoded.drop('Departure', axis=1)
-        X_encoded = X_encoded.drop('Arrival', axis=1)
+    def fit(self, X_df, y_array):
+        X_df = self._merge_external_data(X_df)
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=DataConversionWarning)
+            self.preprocessor.fit(X_df)
+        return self
 
-        X_encoded = X_encoded.drop('DateOfDeparture', axis=1)
-        X_array = X_encoded.values
-        return X_array
+    def transform(self, X_df):
+        X_df = self._merge_external_data(X_df)
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=DataConversionWarning)
+            return self.preprocessor.transform(X_df)

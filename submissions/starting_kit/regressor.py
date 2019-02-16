@@ -8,7 +8,7 @@ class Regressor(BaseEstimator):
             n_estimators=20, max_depth=50, max_features=10)
 
     def fit(self, X, y):
-        self.reg.fit(X, y)
+        return self.reg.fit(X, y)
 
     def predict(self, X):
         return self.reg.predict(X)
