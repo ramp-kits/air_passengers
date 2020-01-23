@@ -18,7 +18,7 @@ install:
 script:
     - flake8 *.py submissions/*/*.py
     - jupyter nbconvert --execute air_passengers_starting_kit.ipynb --ExecutePreprocessor.kernel_name=$IPYTHON_KERNEL --ExecutePreprocessor.timeout=600
-    - ramp test
-    - ramp test --submission dummies
+    - ramp-test
+    - ramp-test --submission dummies
 notifications:
   email: true

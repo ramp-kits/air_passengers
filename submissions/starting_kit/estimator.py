@@ -8,10 +8,11 @@ from sklearn.ensemble import RandomForestRegressor
 
 
 def _merge_external_data(X):
+    X.loc[:, 'DateOfDeparture'] = pd.to_datetime(X.loc[:, 'DateOfDeparture'])
     filepath = os.path.join(
         os.path.dirname(__file__), 'external_data.csv'
     )
-    data_weather = pd.read_csv(filepath)
+    data_weather = pd.read_csv(filepath, parse_dates=["Date"])
     X_weather = data_weather[['Date', 'AirPort', 'Max TemperatureC']]
     X_weather = X_weather.rename(
         columns={'Date': 'DateOfDeparture', 'AirPort': 'Arrival'}
@@ -23,18 +24,15 @@ def _merge_external_data(X):
 
 
 def _encode_dates(X):
-    # to avoid SettingwithCopyWarning
-    X_encoded = X.copy()
-    X_encoded['DateOfDeparture'] = pd.to_datetime(X['DateOfDeparture'])
-    X_encoded['year'] = X_encoded['DateOfDeparture'].dt.year
-    X_encoded['month'] = X_encoded['DateOfDeparture'].dt.month
-    X_encoded['day'] = X_encoded['DateOfDeparture'].dt.day
-    X_encoded['weekday'] = X_encoded['DateOfDeparture'].dt.weekday
-    X_encoded['week'] = X_encoded['DateOfDeparture'].dt.week
-    X_encoded['n_days'] = X_encoded['DateOfDeparture'].apply(
+    X.loc[:, 'year'] = X['DateOfDeparture'].dt.year
+    X.loc[:, 'month'] = X['DateOfDeparture'].dt.month
+    X.loc[:, 'day'] = X['DateOfDeparture'].dt.day
+    X.loc[:, 'weekday'] = X['DateOfDeparture'].dt.weekday
+    X.loc[:, 'week'] = X['DateOfDeparture'].dt.week
+    X.loc[:, 'n_days'] = X['DateOfDeparture'].apply(
         lambda date: (date - pd.to_datetime("1970-01-01")).days
     )
-    return X_encoded
+    return X
 
 
 def get_estimator():
