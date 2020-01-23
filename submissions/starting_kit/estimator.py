@@ -9,7 +9,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 def _merge_external_data(X):
     filepath = os.path.join(os.path.dirname(__file__),
-                            'external_data_mini.csv')
+                            'external_data.csv')
     data_weather = pd.read_csv(filepath)
     X_weather = data_weather[['Date', 'AirPort', 'Max TemperatureC']]
     X_weather = X_weather.rename(
