@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.compose import make_column_transformer

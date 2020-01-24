@@ -23,7 +23,6 @@ def _encode_dates(X):
 
 def get_estimator():
     date_encoder = FunctionTransformer(_encode_dates)
-    date_cols = ["DateOfDeparture"]
 
     categorical_encoder = OneHotEncoder(handle_unknown="ignore")
     categorical_cols = [
