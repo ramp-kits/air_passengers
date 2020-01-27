@@ -2,9 +2,11 @@ name: ramp-air-passengers
 channels:
   - defaults
 dependencies:
+  - pip
   - numpy
   - scikit-learn>=0.22
   - joblib
+  - cloudpickle
   - pandas
   - matplotlib
   - pip:
