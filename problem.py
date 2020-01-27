@@ -9,7 +9,7 @@ _target_column_name = 'log_PAX'
 Predictions = rw.prediction_types.make_regression()
 # An object implementing the workflow
 workflow = rw.workflows.SKLearnPipeline(
-    filename='regressor.py', additional_filenames=['external_data.csv']
+    additional_filenames=['external_data.csv']
 )
 
 score_types = [
