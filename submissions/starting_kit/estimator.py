@@ -8,6 +8,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 def _encode_dates(X):
     # Make sure that DateOfDeparture is of dtype datetime
+    X = X.copy()  # modify a copy of X
     X.loc[:, "DateOfDeparture"] = pd.to_datetime(X['DateOfDeparture'])
     # Encode the date information from the DateOfDeparture columns
     X.loc[:, 'year'] = X['DateOfDeparture'].dt.year

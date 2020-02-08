@@ -1,3 +1,4 @@
+
 import os
 import pandas as pd
 from sklearn.preprocessing import FunctionTransformer
@@ -13,11 +14,12 @@ def _merge_external_data(X):
         os.path.dirname(__file__), 'external_data.csv'
     )
     # Make sure that DateOfDeparture is of dtype datetime
+    X = X.copy()  # modify a copy of X
     X.loc[:, "DateOfDeparture"] = pd.to_datetime(X['DateOfDeparture'])
     # Parse date to also be of dtype datetime
     data_weather = pd.read_csv(filepath, parse_dates=["Date"])
 
-    X_weather = data_weather[['Date', 'AirPort', 'Events']]
+    X_weather = data_weather[['Date', 'AirPort', 'Max TemperatureC']]
     X_weather = X_weather.rename(
         columns={'Date': 'DateOfDeparture', 'AirPort': 'Arrival'}
     )
@@ -52,7 +54,7 @@ def get_estimator():
         SimpleImputer(strategy="constant", fill_value="missing"),
         OrdinalEncoder()
     )
-    categorical_cols = ['Arrival', 'Departure', 'Events']
+    categorical_cols = ['Arrival', 'Departure']
 
     preprocessor = make_column_transformer(
         (date_encoder, date_cols),
