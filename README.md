@@ -9,7 +9,7 @@ Go to [`ramp-worflow`](https://github.com/paris-saclay-cds/ramp-workflow) for mo
 Install ramp-workflow (rampwf), then execute
 
 ```
-ramp_test_submission
+ramp-test
 ```
 
 to test the starting kit submission (`submissions/starting_kit`).
