@@ -4,14 +4,20 @@ Authors: Balazs Kegl
 
 [![Build Status](https://travis-ci.org/ramp-kits/air_passengers.svg?branch=master)](https://travis-ci.org/ramp-kits/air_passengers)
 
-Go to [`ramp-worflow`](https://github.com/paris-saclay-cds/ramp-workflow) for more help on the [RAMP](http:www.ramp.studio) ecosystem.
+You need to install `ramp-workflow`:
 
-Install ramp-workflow (rampwf), then execute
-
+```bash
+pip install -U ramp-workflow
 ```
+
+Then, you will be able to test the starting with the following command:
+
+```bash
 ramp-test
 ```
 
 to test the starting kit submission (`submissions/starting_kit`).
 
 Get started on this RAMP with the [dedicated notebook](air_passengers_starting_kit.ipynb).
+
+You can find more information regarding `ramp-workflow` in the [dedicated documentation](https://paris-saclay-cds.github.io/ramp-docs/ramp-workflow/stable/using_kits.html)
