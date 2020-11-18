@@ -17,6 +17,6 @@ script:
     - ramp-test
     - ramp-test --submission linear_model
     - ramp-test --submission use_external_data
-    - jupyter nbconvert --execute air_passengers_starting_kit.ipynb --ExecutePreprocessor.kernel_name=$IPYTHON_KERNEL --ExecutePreprocessor.timeout=600
+    - jupyter nbconvert --execute air_passengers_starting_kit.ipynb --to html --ExecutePreprocessor.kernel_name=$IPYTHON_KERNEL --ExecutePreprocessor.timeout=600
 notifications:
   email: true
