@@ -16,7 +16,7 @@ def _encode_dates(X):
     X.loc[:, 'month'] = X['DateOfDeparture'].dt.month
     X.loc[:, 'day'] = X['DateOfDeparture'].dt.day
     X.loc[:, 'weekday'] = X['DateOfDeparture'].dt.weekday
-    X.loc[:, 'week'] = X['DateOfDeparture'].dt.week
+    X.loc[:, 'week'] = X['DateOfDeparture'].dt.isocalendar().week
     X.loc[:, 'n_days'] = X['DateOfDeparture'].apply(
         lambda date: (date - pd.to_datetime("1970-01-01")).days
     )
