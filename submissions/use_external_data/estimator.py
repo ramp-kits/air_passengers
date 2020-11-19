@@ -36,7 +36,7 @@ def _encode_dates(X):
     X.loc[:, 'month'] = X['DateOfDeparture'].dt.month
     X.loc[:, 'day'] = X['DateOfDeparture'].dt.day
     X.loc[:, 'weekday'] = X['DateOfDeparture'].dt.weekday
-    X.loc[:, 'week'] = X['DateOfDeparture'].dt.week
+    X.loc[:, 'week'] = X['DateOfDeparture'].dt.isocalendar().week
     X.loc[:, 'n_days'] = X['DateOfDeparture'].apply(
         lambda date: (date - pd.to_datetime("1970-01-01")).days
     )
@@ -45,11 +45,11 @@ def _encode_dates(X):
 
 
 def get_estimator():
+    # Data augmentation transformer (add a column)
     data_merger = FunctionTransformer(_merge_external_data)
-
     date_encoder = FunctionTransformer(_encode_dates)
-    date_cols = ["DateOfDeparture"]
 
+    # preprocessor for categorical variables
     categorical_encoder = make_pipeline(
         SimpleImputer(strategy="constant", fill_value="missing"),
         OrdinalEncoder()
@@ -57,13 +57,18 @@ def get_estimator():
     categorical_cols = ['Arrival', 'Departure']
 
     preprocessor = make_column_transformer(
-        (date_encoder, date_cols),
         (categorical_encoder, categorical_cols),
         remainder='passthrough',  # passthrough numerical columns as they are
     )
 
+    # Regressor to do the prediction
     regressor = RandomForestRegressor(
         n_estimators=10, max_depth=10, max_features=10, n_jobs=4
     )
 
-    return make_pipeline(data_merger, preprocessor, regressor)
+    # Create a pipeline to return a scikit-learn estimator that will
+    # be used in ramp-test to do across validation
+    return make_pipeline(
+        data_merger, date_encoder,
+        preprocessor, regressor
+    )
