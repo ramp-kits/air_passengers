@@ -1,7 +1,6 @@
 language: python
 env:
-  - PYTHON_VERSION=2.7 IPYTHON_KERNEL=python2
-  - PYTHON_VERSION=3.6 IPYTHON_KERNEL=python3
+  - PYTHON_VERSION=3.7 IPYTHON_KERNEL=python3
 before_install:
     - wget -q http://repo.continuum.io/miniconda/Miniconda-3.6.0-Linux-x86_64.sh -O miniconda.sh
     - chmod +x miniconda.sh
@@ -12,12 +11,12 @@ install:
     - conda create -n testenv --yes pip python=$PYTHON_VERSION
     - source activate testenv
     - pip install -q flake8 nbconvert[test]
-    - pip install git+https://github.com/paris-saclay-cds/ramp-workflow.git
     - pip install -r requirements.txt
 script:
-    - flake8 *.py submissions/*/*.py
-    - jupyter nbconvert --execute air_passengers_starting_kit.ipynb --ExecutePreprocessor.kernel_name=$IPYTHON_KERNEL --ExecutePreprocessor.timeout=600
-    - ramp_test_submission
-    - ramp_test_submission --submission=dummies
+    - flake8
+    - ramp-test
+    - ramp-test --submission linear_model
+    - ramp-test --submission use_external_data
+    - jupyter nbconvert --execute air_passengers_starting_kit.ipynb --to html --ExecutePreprocessor.kernel_name=$IPYTHON_KERNEL --ExecutePreprocessor.timeout=600
 notifications:
   email: true
