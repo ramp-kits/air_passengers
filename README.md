@@ -1,7 +1,7 @@
 # RAMP starting kit on the air passengers dataset
 
 
-[![Build Status](https://travis-ci.org/ramp-kits/air_passengers.svg?branch=master)](https://travis-ci.org/ramp-kits/air_passengers)
+[![Build Status](https://travis-ci.org/ramp-kits/air_passengers.svg?branch=master)](https://travis-ci.org/ramp-kits/air_passengers) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ramp-kits/air_passengers/HEAD)
 
 
 ## Getting started
