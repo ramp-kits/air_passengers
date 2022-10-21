@@ -1,6 +1,6 @@
 name: ramp-air-passengers
 channels:
-  - defaults
+  - conda-forge
 dependencies:
   - pip
   - numpy
