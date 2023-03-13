@@ -3,7 +3,7 @@ numpy
 scikit-learn>=0.22
 joblib
 cloudpickle
-pandas
+pandas>=1.1.0
 matplotlib
 holidays
 geopy
